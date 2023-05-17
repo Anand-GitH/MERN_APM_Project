@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node -r ./tracing.js server.js"
   },
   "keywords": [
     "crud",
@@ -14,11 +14,15 @@
   "author": "akshay kashyap",
   "license": "ISC",
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.37.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.39.1",
+    "@opentelemetry/sdk-node": "^0.39.1",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "mongodb": "^5.5.0",
     "mongoose": "^5.10.11",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.6",
