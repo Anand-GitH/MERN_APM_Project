@@ -16,6 +16,10 @@ exports.create = (req,res)=>{
         status : req.body.status
     })
 
+    const opentelemetry = require("@opentelemetry/api");
+    let activeSpan = opentelemetry.trace.getActiveSpan();
+    activeSpan.setAttribute("node.id", user.email);
+
     // save user in the database
     user
         .save(user)
@@ -36,6 +40,9 @@ exports.find = (req, res)=>{
 
     if(req.query.id){
         const id = req.query.id;
+        const opentelemetry = require("@opentelemetry/api");
+        let activeSpan = opentelemetry.trace.getActiveSpan();
+        activeSpan.setAttribute("node.id", id);
 
         Userdb.findById(id)
             .then(data =>{
@@ -71,6 +78,10 @@ exports.update = (req, res)=>{
     }
 
     const id = req.params.id;
+    const opentelemetry = require("@opentelemetry/api");
+    let activeSpan = opentelemetry.trace.getActiveSpan();
+    activeSpan.setAttribute("node.id", id);
+
     Userdb.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
         .then(data => {
             if(!data){
@@ -87,6 +98,9 @@ exports.update = (req, res)=>{
 // Delete a user with specified user id in the request
 exports.delete = (req, res)=>{
     const id = req.params.id;
+    const opentelemetry = require("@opentelemetry/api");
+    let activeSpan = opentelemetry.trace.getActiveSpan();
+    activeSpan.setAttribute("node.id", id);
 
     Userdb.findByIdAndDelete(id)
         .then(data => {
