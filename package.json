@@ -14,6 +14,7 @@
   "author": "akshay kashyap",
   "license": "ISC",
   "dependencies": {
+    "@opentelemetry/api": "^1.4.1",
     "@opentelemetry/auto-instrumentations-node": "^0.37.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.39.1",
     "@opentelemetry/sdk-node": "^0.39.1",
