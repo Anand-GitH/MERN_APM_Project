@@ -8,8 +8,8 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
 const exporterOptions = { 
-   url: "https://aaaadcbgmefqyaaaaaaaaacbem.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
-   headers: {"Authorization": "dataKey WOGNRVDQKPSHXDREBS5ADET2RGE7OAV6"},
+   url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
+   headers: {"Authorization": "dataKey 4K6NPN3ZZ77RV2OFILQBMJ77L3PBP7Z7"},
   }
    
 //const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
