@@ -50,9 +50,9 @@ exports.find = (req, res)=>{
             })
 
     }else{
-        Userdb.find()
-            .then(user => {
-                res.send(user)
+        Userdb.find({})
+            .then(users => {
+                res.send(users)
             })
             .catch(err => {
                 res.status(500).send({ message : err.message || "Error Occurred while retriving user information" })
@@ -76,6 +76,7 @@ exports.update = (req, res)=>{
             if(!data){
                 res.status(404).send({ message : `Cannot Update user with ${id}. Maybe user not found!`})
             }else{
+                console.log("Successfully Updated")
                 res.send(data)
             }
         })
@@ -87,7 +88,7 @@ exports.update = (req, res)=>{
 // Delete a user with specified user id in the request
 exports.delete = (req, res)=>{
     const id = req.params.id;
-
+    console.log(id)
     Userdb.findByIdAndDelete(id)
         .then(data => {
             if(!data){

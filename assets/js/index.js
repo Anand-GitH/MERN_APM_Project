@@ -6,6 +6,7 @@ $("#add_user").submit(function(event){
 })
 
 $("#update_user").submit(function(event){
+    alert("sss")
     event.preventDefault();
 
     var unindexed_array = $(this).serializeArray();
@@ -14,7 +15,6 @@ $("#update_user").submit(function(event){
     $.map(unindexed_array, function(n, i){
         data[n['name']] = n['value']
     })
-
 
     var request = {
         "url" : `http://localhost:3000/api/users/${data.id}`,

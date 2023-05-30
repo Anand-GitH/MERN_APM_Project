@@ -12,10 +12,10 @@ const exporterOptions = {
    headers: {"Authorization": "dataKey WOGNRVDQKPSHXDREBS5ADET2RGE7OAV6"},
   }
    
-const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+//const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 // For troubleshooting, set the log level to DiagLogLevel.DEBUG
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 const traceExporter = new OTLPTraceExporter(exporterOptions);
 const sdk = new opentelemetry.NodeSDK({
