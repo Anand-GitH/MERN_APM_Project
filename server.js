@@ -7,6 +7,7 @@ const path = require('path');
 
 
 const connectDB = require('./server/database/connection');
+const { clear } = require('console');
 
 const app = express();
 
