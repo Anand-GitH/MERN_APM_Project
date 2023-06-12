@@ -6,16 +6,31 @@ const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumenta
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const api = require("@opentelemetry/api");
+const { CompositePropagator } = require("@opentelemetry/core");
 
-const exporterOptions = { 
+
+//Propagation Starts 
+const { B3Propagator, B3InjectEncoding } = require('@opentelemetry/propagator-b3');
+api.propagation.setGlobalPropagator(new CompositePropagator());
+/*api.propagation.setGlobalPropagator( new CompositePropagator({
+    propagators: [
+      new B3Propagator(),
+      new B3Propagator({ injectEncoding: B3InjectEncoding.MULTI_HEADER }),
+    ],
+  }))*/
+//Ends 
+
+
+const exporterOptions = {
    url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
    headers: {"Authorization": "dataKey 4K6NPN3ZZ77RV2OFILQBMJ77L3PBP7Z7"},
   }
-   
+
 //const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
-// For troubleshooting, set the log level to DiagLogLevel.DEBUG
-// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+//For troubleshooting, set the log level to DiagLogLevel.DEBUG
+//diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 const traceExporter = new OTLPTraceExporter(exporterOptions);
 const sdk = new opentelemetry.NodeSDK({

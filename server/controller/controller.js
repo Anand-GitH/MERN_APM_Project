@@ -3,6 +3,22 @@ var Userdb = require('../model/model');
 // create and save new user
 exports.create = (req,res)=>{
     // validate request
+
+    console.log("Inside Create Span\n\n")
+    const api = require('@opentelemetry/api');
+    let current_span = api.trace.getSpan(api.context.active());
+    let trace_id = current_span.spanContext().traceId;
+    let span_id = current_span.spanContext().spanId;
+    let trace_flags = current_span.spanContext().traceFlags;
+    let is_remote = current_span.spanContext().isRemote;
+
+    console.log(current_span)
+    console.log(`log trace_id:”${is_remote}”`)
+    console.log(`log trace_id:”${trace_id}” span_id:”${span_id}” trace_flags:”${trace_flags}”`);
+
+    
+    console.log("End of Create Span\n\n")
+
     if(!req.body){
         res.status(400).send({ message : "Content can not be emtpy!"});
         return;
@@ -34,6 +50,21 @@ exports.create = (req,res)=>{
 // retrieve and return all users/ retrive and return a single user
 exports.find = (req, res)=>{
 
+    console.log("\n\nInside Find Span \n\n")
+    const api = require('@opentelemetry/api');
+    let current_span = api.trace.getSpan(api.context.active());
+    let trace_id = current_span.spanContext().traceId;
+    let span_id = current_span.spanContext().spanId;
+    let trace_flags = current_span.spanContext().traceFlags;
+    let is_remote = current_span.spanContext().isRemote;
+
+    console.log(current_span)
+    console.log(`log trace_id:”${is_remote}”`)
+    console.log(`log trace_id:”${trace_id}” span_id:”${span_id}” trace_flags:”${trace_flags}”`);
+
+    
+    console.log("\n\nEnd of Find Span \n\n")
+
     if(req.query.id){
         const id = req.query.id;
 
@@ -64,6 +95,22 @@ exports.find = (req, res)=>{
 
 // Update a new idetified user by user id
 exports.update = (req, res)=>{
+
+    console.log("\n\nInside update Span \n\n")
+    const api = require('@opentelemetry/api');
+    let current_span = api.trace.getSpan(api.context.active());
+    let trace_id = current_span.spanContext().traceId;
+    let span_id = current_span.spanContext().spanId;
+    let trace_flags = current_span.spanContext().traceFlags;
+    let is_remote = current_span.spanContext().isRemote;
+
+    console.log(current_span)
+    console.log(`log trace_id:”${is_remote}”`)
+    console.log(`log trace_id:”${trace_id}” span_id:”${span_id}” trace_flags:”${trace_flags}”`);
+
+    
+    console.log("\n\nEnd of update Span \n\n")
+    
     if(!req.body){
         return res
             .status(400)
@@ -87,8 +134,23 @@ exports.update = (req, res)=>{
 
 // Delete a user with specified user id in the request
 exports.delete = (req, res)=>{
+
+    console.log("\n\nInside Delete Span \n\n")
+    const api = require('@opentelemetry/api');
+    let current_span = api.trace.getSpan(api.context.active());
+    let trace_id = current_span.spanContext().traceId;
+    let span_id = current_span.spanContext().spanId;
+    let trace_flags = current_span.spanContext().traceFlags;
+    let is_remote = current_span.spanContext().isRemote;
+
+    console.log(current_span)
+    console.log(`log trace_id:”${is_remote}”`)
+    console.log(`log trace_id:”${trace_id}” span_id:”${span_id}” trace_flags:”${trace_flags}”`);
+
+    
+    console.log("\n\nEnd of Delete Span \n\n")
+
     const id = req.params.id;
-    console.log(id)
     Userdb.findByIdAndDelete(id)
         .then(data => {
             if(!data){
