@@ -1,55 +1,41 @@
-// tracing.js
-'use strict'
-const process = require('process');
-const opentelemetry = require('@opentelemetry/sdk-node');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
+'use strict';
+
+const opentelemetry = require('@opentelemetry/api');
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
-const api = require("@opentelemetry/api");
-const { CompositePropagator } = require("@opentelemetry/core");
+const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
 
-
-//Propagation Starts 
-const { B3Propagator, B3InjectEncoding } = require('@opentelemetry/propagator-b3');
-api.propagation.setGlobalPropagator(new CompositePropagator());
-/*api.propagation.setGlobalPropagator( new CompositePropagator({
-    propagators: [
-      new B3Propagator(),
-      new B3Propagator({ injectEncoding: B3InjectEncoding.MULTI_HEADER }),
-    ],
-  }))*/
-//Ends 
-
-
-const exporterOptions = {
-   url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
-   headers: {"Authorization": "dataKey 4K6NPN3ZZ77RV2OFILQBMJ77L3PBP7Z7"},
-  }
-
-//const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 //For troubleshooting, set the log level to DiagLogLevel.DEBUG
-//diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-const traceExporter = new OTLPTraceExporter(exporterOptions);
-const sdk = new opentelemetry.NodeSDK({
-   traceExporter,
-   instrumentations: [getNodeAutoInstrumentations()],
-   resource: new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: 'crud_app'
-      })
-});
+module.exports = (serviceName) => {
+  const provider = new NodeTracerProvider({
+    resource: new Resource({
+      [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+    })}), exporter = new OTLPTraceExporter({
+      url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/private/v1/traces",
+      headers: {
+        Authorization: "dataKey GO6KPBXOAIYHQHMX5MLYJT74YS4WHIJQ",
+      },
+  });
 
-// initialize the SDK and register with the OpenTelemetry API
-// this enables the API to record telemetry
+  provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
-sdk.start()
+  // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
+  provider.register();
 
-// gracefully shut down the SDK on process exit
-process.on('SIGTERM', () => {
-   sdk.shutdown()
- .then(() => console.log('Tracing terminated'))
- .catch((error) => console.log('Error terminating tracing', error))
- .finally(() => process.exit(0));
- });
+  registerInstrumentations({
+    // // when boostraping with lerna for testing purposes
+    instrumentations: [
+      new HttpInstrumentation(),
+    ],
+  });
+
+  return opentelemetry.trace.getTracer('anand-example');
+};

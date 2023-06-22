@@ -3,6 +3,7 @@ const axios = require('axios');
 
 exports.homeRoutes = (req, res) => {
     // Make a get request to /api/users
+    console.log("Inside homeroutes");
     axios.get('http://localhost:3000/api/users')
         .then(function(response){
             res.render('index', { users : response.data });
@@ -15,10 +16,12 @@ exports.homeRoutes = (req, res) => {
 }
 
 exports.add_user = (req, res) =>{
+    console.log("add user");
     res.render('add_user');
 }
 
 exports.update_user = (req, res) =>{
+    console.log("update user");
     axios.get('http://localhost:3000/api/users', { params : { id : req.query.id }})
         .then(function(userdata){
             res.render("update_user", { user : userdata.data})
