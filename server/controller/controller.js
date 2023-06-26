@@ -10,10 +10,10 @@ exports.create = (req,res)=>{
 
     console.log("\n\nInside create Span \n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const currentSpan = api.trace.getActiveSpan();
+    //const currentSpan = api.trace.getActiveSpan();
     // display traceid in the terminal
-    const traceId = currentSpan.spanContext().traceId;
-    console.log(`traceId: ${traceId}`);
+    //const traceId = currentSpan.spanContext().traceId;
+    //console.log(`traceId: ${traceId}`);
     const span = tracer.startSpan('handleRequest', {
       kind: 1, // server
       attributes: { key: 'value' },
@@ -101,16 +101,16 @@ exports.update = (req, res)=>{
 
     console.log("\n\nInside Update Span \n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const currentSpan = api.trace.getActiveSpan();
+    //const currentSpan = api.trace.getActiveSpan();
     // display traceid in the terminal
-    const traceId = currentSpan.spanContext().traceId;
-    console.log(`traceId: ${traceId}`);
+    //const traceId = currentSpan.spanContext().traceId;
+    //console.log(`traceId: ${traceId}`);
     const span = tracer.startSpan('handleRequest', {
       kind: 1, // server
       attributes: { key: 'value' },
     });
     // Annotate our span to capture metadata about the operation
-    span.addEvent('invoking update request');
+    span.addEvent('invoking update request');  //Logs for span : exceptions, SQL or time additional info for the span in APM log 
     
     if(!req.body){
         return res

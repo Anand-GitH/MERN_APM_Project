@@ -7,6 +7,8 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb');
+const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { OTLPTraceExporter } = require("@opentelemetry/exporter-trace-otlp-http");
 
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
@@ -23,17 +25,25 @@ module.exports = (serviceName) => {
       headers: {
         Authorization: "dataKey GO6KPBXOAIYHQHMX5MLYJT74YS4WHIJQ",
       },
+
   });
+
+const { B3Propagator, B3InjectEncoding } = require('@opentelemetry/propagator-b3');
+//opentelemetry.propagation.setGlobalPropagator(new B3Propagator());
 
   provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
   // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
-  provider.register();
+  provider.register({
+    propagator: new B3Propagator()
+  })
 
   registerInstrumentations({
     // // when boostraping with lerna for testing purposes
     instrumentations: [
       new HttpInstrumentation(),
+      new ExpressInstrumentation(),
+      new MongoDBInstrumentation(),
     ],
   });
 
