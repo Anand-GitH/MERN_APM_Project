@@ -14,7 +14,7 @@ exports.create = (req,res)=>{
 
     console.log("Inside Create Span\n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
         'ServerSpanCreate:Anand', 
@@ -26,7 +26,7 @@ exports.create = (req,res)=>{
     console.log("After span in CTX:"+opentelemetry.context.active())
     childSpan.setAttribute('DebugEventName','Find')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
 
     if(!req.body){
         res.status(400).send({ message : "Content can not be emtpy!"});
@@ -53,7 +53,7 @@ exports.create = (req,res)=>{
                 message : err.message || "Some error occurred while creating a create operation"
             });
         });
-    childSpan.end();
+    //childSpan.end();
 }
 
 // retrieve and return all users/ retrive and return a single user
@@ -61,7 +61,7 @@ exports.find = (req, res)=>{
 
     console.log("\n\nInside Find Span \n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
         'ServerSpanFind:Anand', 
@@ -73,7 +73,7 @@ exports.find = (req, res)=>{
     console.log("After span in CTX:"+opentelemetry.context.active())
     childSpan.setAttribute('DebugEventName','Find')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
 
 
 
@@ -102,7 +102,7 @@ exports.find = (req, res)=>{
             })
     }
 
-    childSpan.end();
+    //childSpan.end();
 }
 
 // Update a new idetified user by user id
@@ -110,7 +110,7 @@ exports.update = (req, res)=>{
 
     console.log("\n\nInside update Span \n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
         'ServerSpanUpdate:Anand', 
@@ -122,7 +122,7 @@ exports.update = (req, res)=>{
     console.log("After span in CTX:"+opentelemetry.context.active())
     childSpan.setAttribute('DebugEventName','Find')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
 
 
 
@@ -146,7 +146,7 @@ exports.update = (req, res)=>{
             res.status(500).send({ message : "Error Update user information"})
         })
 
-    childSpan.end();
+    //childSpan.end();
 }
 
 // Delete a user with specified user id in the request
@@ -154,7 +154,7 @@ exports.delete = (req, res)=>{
 
     console.log("\n\nInside Delete Span \n\n")
     console.log("Inside req header:"+ JSON.stringify(req.headers))
-    const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
         'ServerSpanDelete:Anand', 
@@ -166,7 +166,7 @@ exports.delete = (req, res)=>{
     console.log("After span in CTX:"+opentelemetry.context.active())
     childSpan.setAttribute('DebugEventName','Find')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
 
     if(!req.body){
         return res
@@ -190,5 +190,5 @@ exports.delete = (req, res)=>{
                 message: "Could not delete User with id=" + id
             });
         });
-    childSpan.end();
+    //childSpan.end();
 }
