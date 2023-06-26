@@ -6,6 +6,7 @@ const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumenta
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb')
 
 /*const exporterOptions = {
    url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
@@ -27,8 +28,11 @@ const sdk = new opentelemetry.NodeSDK({
     '@opentelemetry/instrumentation-fs': {
       enabled: false,
     },
+  }),
+  new MongoDBInstrumentation({
+    enhancedDatabaseReporting: true,
   })],
-   resource: new Resource({
+  resource: new Resource({
       [SemanticResourceAttributes.SERVICE_NAME]: 'crud_app'
       })
 });
