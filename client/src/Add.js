@@ -16,6 +16,22 @@ export default function Home(){
         setData(dataClone)
     }
 
+    function handleAddSubmit(event){
+        event.preventDefault();
+        let dataClone = data;
+        console.log(dataClone)
+        fetch('/api/users', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataClone)
+        })
+        .then(response => response.json())
+        .then(json => {alert("Successfully Created User")})
+    }
     
   return (
     <div className="App">
@@ -32,7 +48,7 @@ export default function Home(){
                 </div>
 
 
-                <form action="/api/users" method="POST" id="add_user">
+                <form method="POST" id="add_user" onSubmit={handleAddSubmit}>
                 <div class="new_user">
                     <div class="form-group">
                         <label for="name" class="text-light">Name</label>
