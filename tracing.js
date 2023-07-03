@@ -8,14 +8,14 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb')
 
-/*const exporterOptions = {
-   url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/public/v1/traces",
-   headers: {"Authorization": "dataKey 4K6NPN3ZZ77RV2OFILQBMJ77L3PBP7Z7"},
-  }*/
-
 const exporterOptions = {
+   url: "https://aaaadcdobxuhuaaaaaaaaacc74.apm-agt.us-ashburn-1.oci.oraclecloud.com/20200101/opentelemetry/private/v1/traces",
+   headers: {"Authorization": "dataKey GO6KPBXOAIYHQHMX5MLYJT74YS4WHIJQ"},
+  }
+
+/*const exporterOptions = {
     url: "http://localhost:4318/v1/traces",
-   }
+   }*/
 
 //For troubleshooting, set the log level to DiagLogLevel.DEBUG  
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
