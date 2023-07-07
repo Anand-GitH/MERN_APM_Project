@@ -3,8 +3,30 @@ const {SpanKind, ROOT_CONTEXT} = require("@opentelemetry/api");
 const { CompositePropagator } = require("@opentelemetry/core");
 const api = require("@opentelemetry/api");
 const trace = require("@opentelemetry/api")
+const { LoggerProvider, BatchLogRecordProcessor,ConsoleLogRecordExporter } = require('@opentelemetry/sdk-logs');
+const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-http');
+const { SeverityNumber } = require('@opentelemetry/api-logs');
 
+// exporter options. see all options in OTLPExporterNodeConfigBase
+const collectorOptions = {
+  url: 'http://localhost:4318/v1/logs', // url is optional and can be omitted - default is /v1/logs
+  concurrencyLimit: 1, // an optional limit on pending requests
+};
+const logExporter = new OTLPLogExporter(collectorOptions);
+const loggerProvider = new LoggerProvider();
 
+loggerProvider.addLogRecordProcessor(new BatchLogRecordProcessor(logExporter));
+//loggerProvider.addLogRecordProcessor(new BatchLogRecordProcessor(new ConsoleLogRecordExporter()));
+
+const logger = loggerProvider.getLogger('default', '1.0.0');
+
+// Emit a log
+logger.emit({
+    severityNumber: SeverityNumber.INFO,
+    severityText: 'info',
+    body: 'this is a log body',
+    attributes: { 'log.type': 'custom' },
+  });
 
 var Userdb = require('../model/model');
 
@@ -12,8 +34,14 @@ var Userdb = require('../model/model');
 exports.create = (req,res)=>{
     // validate request
 
-    console.log("Inside Create Span\n\n")
-    console.log("Inside req header:"+ JSON.stringify(req.headers))
+    // Emit a log
+logger.emit({
+    severityNumber: SeverityNumber.INFO,
+    severityText: 'info',
+    body: 'Inside Create',
+    attributes: { 'log.type': 'custom' },
+  });
+
     /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
@@ -59,8 +87,14 @@ exports.create = (req,res)=>{
 // retrieve and return all users/ retrive and return a single user
 exports.find = (req, res)=>{
 
-    console.log("\n\nInside Find Span \n\n")
-    console.log("Inside req header:"+ JSON.stringify(req.headers))
+    logger.emit({
+        severityNumber: SeverityNumber.INFO,
+        severityText: 'info',
+        body: 'Inside Find',
+        attributes: { 'log.type': 'custom' },
+      });
+    console.log(SeverityNumber.INFO,"Info","\n\nInside Find Span \n\n")
+    console.log(SeverityNumber.INFO,"Info","Inside req header:"+ JSON.stringify(req.headers))
     /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
@@ -108,8 +142,15 @@ exports.find = (req, res)=>{
 // Update a new idetified user by user id
 exports.update = (req, res)=>{
 
-    console.log("\n\nInside update Span \n\n")
-    console.log("Inside req header:"+ JSON.stringify(req.headers))
+    logger.emit({
+        severityNumber: SeverityNumber.INFO,
+        severityText: 'info',
+        body: 'Inside Update',
+        attributes: { 'log.type': 'custom' },
+      });
+
+    console.log(SeverityNumber.INFO,"Info","\n\nInside update Span \n\n")
+    console.log(SeverityNumber.INFO,"Info","Inside req header:"+ JSON.stringify(req.headers))
     /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
@@ -152,8 +193,15 @@ exports.update = (req, res)=>{
 // Delete a user with specified user id in the request
 exports.delete = (req, res)=>{
 
-    console.log("\n\nInside Delete Span \n\n")
-    console.log("Inside req header:"+ JSON.stringify(req.headers))
+    logger.emit({
+        severityNumber: SeverityNumber.INFO,
+        severityText: 'info',
+        body: 'Inside Delete',
+        attributes: { 'log.type': 'custom' },
+      });
+
+    console.log(SeverityNumber.INFO,"Info","\n\nInside Delete Span \n\n")
+    console.log(SeverityNumber.INFO,"Info","Inside req header:"+ JSON.stringify(req.headers))
     /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(

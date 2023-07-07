@@ -20,8 +20,8 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
     const uploadLogFileRequest = {
       namespaceName: "omcinternal",
       uploadName: "Test_anand",
-      logSourceName: "Mern_App",
-      filename: "Node.log",
+      logSourceName: "MernApp",  #log source and then parser and use it in the code 
+      filename: "Node.log", #remove this 
       opcMetaLoggrpid: "ocid1.loganalyticsloggroup.oc1.iad.amaaaaaae5xv5jia25z5hocr7gtkep3i7ifxfrqw6lrmfzqnt7tdbhnuanaq",
       // Create a Stream, for example, by calling a helper function like below.
       uploadLogFileBody: bodytext,
