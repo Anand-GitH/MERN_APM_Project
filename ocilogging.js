@@ -41,6 +41,9 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
       uploadLogFileBody: bodytext,
     };
 
+
+    //Log before sending data to OCI
+    //console.log('Data before sending it to OCI:'+ data )
     // Send request to the Client.
     const uploadLogFileResponse = client.uploadLogFile(uploadLogFileRequest);
   } catch (error) {
@@ -49,36 +52,63 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
 })()
 }
 
-function OCIInfoStream() {}
+function InfoStream() {}
 
-OCIInfoStream.prototype.write = function(data) {
+InfoStream.prototype.write = function(data) {
+  //console.log('Inside Info')
   ocilogging(data)
 }
 
 function DebugInfoStream() {}
 
 DebugInfoStream.prototype.write = function(data) {
+  //console.log('Inside debug')
   ocilogging(data)
 }
 
-function getLogger(){
-  
-  var log = bunyan.createLogger({
-    name: "OCILogger",
-    streams: [{
-      level: "info",
-      stream: new OCIInfoStream()
-    }, {
-      level: "debug",
-      stream: new DebugInfoStream()
-    }]
-  })
+function ErrorInfoStream() {}
 
-  return log;
-
+ErrorInfoStream.prototype.write = function(data) {
+  //console.log('Inside error')
+  ocilogging(data)
 }
 
-var log=getLogger()
-log.level(bunyan.DEBUG)
-log.debug("debug1 anand me")
-log.debug("debug2 anand me")
+function WarnInfoStream() {}
+
+WarnInfoStream.prototype.write = function(data) {
+  //console.log('Inside warn')
+  ocilogging(data)
+}
+
+module.exports = {
+  getlogger: function () {
+    var log = bunyan.createLogger({
+      src: true,
+      name: "OCILogger",
+      streams: [{
+        level: "info",
+        stream: new InfoStream()
+      },
+      {
+        level: "debug",
+        stream: new DebugInfoStream()
+      },
+      {
+        level: "error",
+        stream: new ErrorInfoStream()
+      },
+      {
+      level: "warn",
+      stream: new WarnInfoStream()
+      }]
+    })
+  
+    return log;
+  }
+};
+
+
+
+
+
+

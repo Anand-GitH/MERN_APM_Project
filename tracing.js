@@ -18,8 +18,8 @@ const exporterOptions = {
    }
 
 //For troubleshooting, set the log level to DiagLogLevel.DEBUG  
-const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+//const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+//diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 const traceExporter = new OTLPTraceExporter(exporterOptions);
 const sdk = new opentelemetry.NodeSDK({
