@@ -1,9 +1,14 @@
+const {fetch, setGlobalDispatcher, Agent } = require('undici')
+setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }) )
+
 // JavaScript
 "use strict";
 const loganalytics = require("oci-loganalytics");
 const common = require("oci-common");
 const log4js = require('log4js');
 var bunyan = require('bunyan');
+
+
 
 function generateStreamFromString(data) {
   let Readable = require("stream").Readable;
@@ -26,10 +31,19 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
 );
 
 //Using node js OCI logging analytics client to send log message to the LA
+
+
 (async () => {
   try {
     // Create a service client
-    const client = new loganalytics.LogAnalyticsClient({ authenticationDetailsProvider: provider });
+    const client = new loganalytics.LogAnalyticsClient({ authenticationDetailsProvider: provider }, {
+      retryConfiguration : { 
+         delayStrategy : new common.FixedTimeDelayStrategy(5),
+         terminationStrategy : new common.MaxTimeTerminationStrategy(30),
+         retryCondition : (error) => { return error.statusCode >= 500; 
+      }
+    }});
+
     var bodytext = Buffer.from(data, 'utf8');
     // Create a request and dependent object(s).
     const uploadLogFileRequest = {
@@ -45,11 +59,12 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
     //Log before sending data to OCI
     //console.log('Data before sending it to OCI:'+ data )
     // Send request to the Client.
+    //const uploadLogFileResponse = await client.uploadLogFile(uploadLogFileRequest);
     const uploadLogFileResponse = client.uploadLogFile(uploadLogFileRequest);
   } catch (error) {
     console.log("uploadLogFile Failed with error  " + JSON.stringify(error));
   }
-})()
+})();
 }
 
 function InfoStream() {}
@@ -106,8 +121,6 @@ module.exports = {
     return log;
   }
 };
-
-
 
 
 

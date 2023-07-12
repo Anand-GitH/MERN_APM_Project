@@ -54,10 +54,10 @@ exports.create = (req,res)=>{
             //res.redirect('/add-user');
         })
         .catch(err =>{
+            log.error("Inside create method: Some error occurred while creating a create operation "+ err.message )
             res.status(500).send({
                 message : err.message || "Some error occurred while creating a create operation"
             });
-            log.error("Inside create method: Some error occurred while creating a create operation "+ err.message )
         });
     //childSpan.end();
 }
@@ -156,7 +156,7 @@ exports.update = (req, res)=>{
                 res.status(404).send({ message : `Cannot Update user with ${id}. Maybe user not found!`})
             }else{
                 log.debug("Inside update method: Found record and updated the record");
-                console.log("Successfully Updated")
+                //console.log("Successfully Updated")
                 res.send(data)
             }
         })
