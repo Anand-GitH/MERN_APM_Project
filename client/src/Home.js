@@ -5,7 +5,18 @@ import {Route, Link} from 'react-router-dom'
 export default function Home(){
   const[data, setData] = React.useState([]);
   React.useEffect(() => {
-    fetch("/api/users")
+    fetch("http://merninstance-07062023:3500/api/users" , {
+    	headers: {
+		'Access-Control-Allow-Origin': '*',
+		'Content-Type': 'application/json',
+		'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+		'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
+
+
+	}
+
+    })
+	
     .then((res) => res.json())
     .then((data) => {
       console.log(data, "userData")

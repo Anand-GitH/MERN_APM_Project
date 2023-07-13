@@ -9,7 +9,14 @@ export default function Update(){
 
   const[data, setData] = React.useState([]);
   React.useEffect(() => {
-    fetch("/api/users?id=" + id)
+    fetch("http://merninstance-07062023:3500/api/users?id=" + id, {
+        headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Methods': 'DELETE, POST, PUT, GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
+	}
+    })
     .then((res) => res.json())
     .then((data) => {
       console.log(data, "userData")
@@ -27,12 +34,16 @@ export default function Update(){
         event.preventDefault();
         let dataClone = data;
         console.log(dataClone)
-        fetch('/api/users/'+dataClone._id, {
+        fetch('http://merninstance-07062023:3500/api/users/'+dataClone._id, {
             method: 'PUT', 
             mode: 'cors',
             headers: {
                 'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Methods': 'DELETE, POST, PUT, GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
+
             },
             body: JSON.stringify(dataClone)
         })
