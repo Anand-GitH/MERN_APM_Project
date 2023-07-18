@@ -48,11 +48,7 @@ export default function Home(){
                 </div>
 
 
-<<<<<<< Updated upstream
                 <form method="POST" id="add_user" onSubmit={handleAddSubmit}>
-=======
-                <form action="http://merninstance-07062023:3500/api/users" method="POST" id="add_user">
->>>>>>> Stashed changes
                 <div class="new_user">
                     <div class="form-group">
                         <label for="name" class="text-light">Name</label>

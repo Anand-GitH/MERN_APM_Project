@@ -4,18 +4,15 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const path = require('path');
-const cors = require('cors');
+
 
 const connectDB = require('./server/database/connection');
 const { clear } = require('console');
 
 const app = express();
 
-const PORT = 3500
+const PORT = 3000
 
-app.use(cors())
-
-app.set('view engine', 'html') 
 
 // mongodb connection
 connectDB();

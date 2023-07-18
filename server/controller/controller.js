@@ -49,14 +49,9 @@ exports.create = (req,res)=>{
     user
         .save(user)
         .then(data => {
-<<<<<<< Updated upstream
             res.send(data)
             log.debug("Inside create method: Record successfully saved");
             //res.redirect('/add-user');
-=======
-            //res.send(data)
-            res.redirect("http://merninstance-07062023:3500/add-user");
->>>>>>> Stashed changes
         })
         .catch(err =>{
             log.error("Inside create method: Some error occurred while creating a create operation "+ err.message )
@@ -221,8 +216,5 @@ exports.delete = (req, res)=>{
                 message: "Could not delete User with id=" + id
             });
         });
-<<<<<<< Updated upstream
     //childSpan.end();
-=======
->>>>>>> Stashed changes
 }
