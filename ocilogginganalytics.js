@@ -9,7 +9,6 @@ const log4js = require('log4js');
 var bunyan = require('bunyan');
 
 
-
 function generateStreamFromString(data) {
   let Readable = require("stream").Readable;
   let stream = new Readable();
@@ -31,7 +30,6 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
 );
 
 //Using node js OCI logging analytics client to send log message to the LA
-
 
 (async () => {
   try {
@@ -55,9 +53,6 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
       uploadLogFileBody: bodytext,
     };
 
-
-    //Log before sending data to OCI
-    //console.log('Data before sending it to OCI:'+ data )
     // Send request to the Client.
     //const uploadLogFileResponse = await client.uploadLogFile(uploadLogFileRequest);
     const uploadLogFileResponse = client.uploadLogFile(uploadLogFileRequest);
@@ -70,28 +65,24 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
 function InfoStream() {}
 
 InfoStream.prototype.write = function(data) {
-  //console.log('Inside Info')
   ocilogging(data)
 }
 
 function DebugInfoStream() {}
 
 DebugInfoStream.prototype.write = function(data) {
-  //console.log('Inside debug')
   ocilogging(data)
 }
 
 function ErrorInfoStream() {}
 
 ErrorInfoStream.prototype.write = function(data) {
-  //console.log('Inside error')
   ocilogging(data)
 }
 
 function WarnInfoStream() {}
 
 WarnInfoStream.prototype.write = function(data) {
-  //console.log('Inside warn')
   ocilogging(data)
 }
 

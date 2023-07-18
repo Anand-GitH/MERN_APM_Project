@@ -1,7 +1,7 @@
 const opentelemetry = require('@opentelemetry/api');
 const {SpanKind, ROOT_CONTEXT} = require("@opentelemetry/api");
 const { CompositePropagator } = require("@opentelemetry/core");
-const ocilog= require("../../ocilogging")
+const ocilog= require("../../ocilogginganalytics")
 const api = require("@opentelemetry/api");
 const trace = require("@opentelemetry/api")
 
@@ -13,19 +13,19 @@ exports.create = (req,res)=>{
     // validate request
 
     log.debug("Inside create method: Start of Create Method")
-    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    
+    //Code to add span attributes
+    /*
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
-        'ServerSpanCreate:Anand', 
-        remoteCtx
+        'ServerSpanCreate',
       );
 
     // Set the created span as active in the deserialized context.
-    console.log("After CTX:"+opentelemetry.context.active())
-    console.log("After span in CTX:"+opentelemetry.context.active())
-    childSpan.setAttribute('DebugEventName','Find')
+    childSpan.setAttribute('DebugEventName','Create')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    */
 
     if(!req.body){
         res.status(400).send({ message : "Content can not be emtpy!"});
@@ -59,7 +59,11 @@ exports.create = (req,res)=>{
                 message : err.message || "Some error occurred while creating a create operation"
             });
         });
-    //childSpan.end();
+
+    //End the span created
+    /*
+    childSpan.end();
+    */
 }
 
 // retrieve and return all users/ retrive and return a single user
@@ -67,21 +71,18 @@ exports.find = (req, res)=>{
 
     
     log.debug("Inside find method: Start of Find Method");
-    //console.log(SeverityNumber.INFO,"Info","\n\nInside Find Span \n\n")
-    //console.log(SeverityNumber.INFO,"Info","Inside req header:"+ JSON.stringify(req.headers))
-    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    //Code to add span attributes
+    /*
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
-        'ServerSpanFind:Anand', 
-        remoteCtx
+        'ServerSpanFind',
       );
 
     // Set the created span as active in the deserialized context.
-    console.log("After CTX:"+opentelemetry.context.active())
-    console.log("After span in CTX:"+opentelemetry.context.active())
     childSpan.setAttribute('DebugEventName','Find')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    */
 
 
     log.debug("Inside find method:Querying record:"+req.query.id);
@@ -116,7 +117,10 @@ exports.find = (req, res)=>{
             })
     }
 
-    //childSpan.end();
+    //End the span created
+    /*
+    childSpan.end();
+    */
 }
 
 // Update a new idetified user by user id
@@ -125,19 +129,18 @@ exports.update = (req, res)=>{
     
     log.debug("Inside update method: start of update Method")
 
-    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+   //Code to add span attributes
+    /*
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
-        'ServerSpanUpdate:Anand', 
-        remoteCtx
+        'ServerSpanUpdate',
       );
 
     // Set the created span as active in the deserialized context.
-    console.log("After CTX:"+opentelemetry.context.active())
-    console.log("After span in CTX:"+opentelemetry.context.active())
-    childSpan.setAttribute('DebugEventName','Find')
+    childSpan.setAttribute('DebugEventName','Update')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    */
 
 
 
@@ -165,7 +168,10 @@ exports.update = (req, res)=>{
             res.status(500).send({ message : "Error Update user information"})
         })
 
-    //childSpan.end();
+    //End the span created
+    /*
+    childSpan.end();
+    */
 }
 
 // Delete a user with specified user id in the request
@@ -174,21 +180,18 @@ exports.delete = (req, res)=>{
    
     log.debug("Inside delete method: start of delete");
 
-    //console.log(SeverityNumber.INFO,"Info","\n\nInside Delete Span \n\n")
-    //console.log(SeverityNumber.INFO,"Info","Inside req header:"+ JSON.stringify(req.headers))
-    /*const remoteCtx = opentelemetry.propagation.extract(ROOT_CONTEXT, req.headers);
+    //Code to add span attributes
+    /*
     const tracer = opentelemetry.trace.getTracer();
     const childSpan = tracer.startSpan(
-        'ServerSpanDelete:Anand', 
-        remoteCtx
+        'ServerSpanDelete',
       );
 
     // Set the created span as active in the deserialized context.
-    console.log("After CTX:"+opentelemetry.context.active())
-    console.log("After span in CTX:"+opentelemetry.context.active())
-    childSpan.setAttribute('DebugEventName','Find')
+    childSpan.setAttribute('DebugEventName','Delete')
     childSpan.setAttribute('DebugTraceId',childSpan.spanContext().traceId)
-    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)*/
+    childSpan.setAttribute('DebugSpanId',childSpan.spanContext().spanId)
+    */
 
     if(!req.body){
         log.debug("Inside delete method: Data to update can not be empty");
@@ -216,5 +219,8 @@ exports.delete = (req, res)=>{
                 message: "Could not delete User with id=" + id
             });
         });
-    //childSpan.end();
+   //End the span created
+   /*
+    childSpan.end();
+   */
 }
