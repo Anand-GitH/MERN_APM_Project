@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r ./tracing.js server.js && node -r ./metrics.js"
+    "start": "node -r ./metrics.js -r ./tracing.js server.js"
   },
   "keywords": [
     "crud",
