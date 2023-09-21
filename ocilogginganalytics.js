@@ -1,13 +1,52 @@
-const {fetch, setGlobalDispatcher, Agent } = require('undici')
-setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }) )
-
 // JavaScript
 "use strict";
 const loganalytics = require("oci-loganalytics");
 const common = require("oci-common");
-const log4js = require('log4js');
 var bunyan = require('bunyan');
 
+class LogBuffer {
+  constructor(bufferSize, flushInterval, logFunction) {
+    this.bufferSize = bufferSize;
+    this.flushInterval = flushInterval;
+    this.logFunction = logFunction;
+    this.buffer = [];
+
+    // Set up a timer to flush the buffer at regular intervals
+    this.flushTimer = setInterval(this.flush.bind(this), this.flushInterval);
+  }
+
+  log(message) {
+    console.log("log:"+this.buffer.length)
+    this.buffer.push(message);
+
+    // Check if the buffer size has been reached, and flush if necessary
+    if (this.buffer.length >= this.bufferSize) {
+      this.flush();
+    }
+  }
+
+  flush() {
+    console.log("flush:"+this.buffer.length)
+    if (this.buffer.length === 0) {
+      return;
+    }
+
+    // Concatenate the buffered log messages and call the log function
+    const logMessage = this.buffer.join('\n');
+    this.logFunction(logMessage);
+
+    // Clear the buffer
+    this.buffer = [];
+  }
+
+  close() {
+    // Flush any remaining logs and stop the flush timer
+    this.flush();
+    clearInterval(this.flushTimer);
+  }
+}
+
+const buffer = new LogBuffer(30, 60000, ocilogging);
 
 function generateStreamFromString(data) {
   let Readable = require("stream").Readable;
@@ -21,7 +60,7 @@ function ocilogging(data){
 
 //initialization of the OCI logging parameters
 //config contains API key and tenancy, user details & profile to use
-
+console.log("Inside ocilogging")
 const configurationFilePath = "~/.oci/config";
 const configProfile = "DEFAULT";
 const provider = new common.ConfigFileAuthenticationDetailsProvider(
@@ -50,40 +89,46 @@ const provider = new common.ConfigFileAuthenticationDetailsProvider(
       logSourceName: "MernApp",  
       filename: "Node.log",
       opcMetaLoggrpid: "ocid1.loganalyticsloggroup.oc1.iad.amaaaaaae5xv5jia25z5hocr7gtkep3i7ifxfrqw6lrmfzqnt7tdbhnuanaq",
+      //opcMetaLoggrpid: "ocid1.loganalyticsloggroup.oc1.iad.anandae5xv5jia25z5hocr7gtkep3i7ifxfrqw6lrmfzqnt7tdbhnuanaq",
       uploadLogFileBody: bodytext,
     };
 
     // Send request to the Client.
     //const uploadLogFileResponse = await client.uploadLogFile(uploadLogFileRequest);
-    const uploadLogFileResponse = client.uploadLogFile(uploadLogFileRequest);
+    try{
+    const uploadLogFileResponse = await client.uploadLogFile(uploadLogFileRequest);
+    } catch (err) {
+        console.log('requestId: ', err.opcRequestId);
+    }
   } catch (error) {
     console.log("uploadLogFile Failed with error  " + JSON.stringify(error));
   }
 })();
+
 }
 
 function InfoStream() {}
 
 InfoStream.prototype.write = function(data) {
-  ocilogging(data)
+  buffer.log(data)
 }
 
 function DebugInfoStream() {}
 
 DebugInfoStream.prototype.write = function(data) {
-  ocilogging(data)
+  buffer.log(data)
 }
 
 function ErrorInfoStream() {}
 
 ErrorInfoStream.prototype.write = function(data) {
-  ocilogging(data)
+  buffer.log(data)
 }
 
 function WarnInfoStream() {}
 
 WarnInfoStream.prototype.write = function(data) {
-  ocilogging(data)
+  buffer.log(data)
 }
 
 module.exports = {

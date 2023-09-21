@@ -34,6 +34,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-handlebars": "^7.0.7",
+    "log-timestamp": "^0.3.0",
     "log4js": "^6.9.1",
     "metrics-os": "^1.0.1",
     "mongodb": "^5.5.0",
